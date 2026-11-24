@@ -67,7 +67,7 @@ y_max = 30
 # [X]
 # FIGURE SIZE
 auto_size = False
-figure_width_inches = 4
+figure_width_inches = 5
 figure_height_inches = 7.5/2
 # removed until further notice
 #figure_unit = 'inch' # "inch", "cm", "px".
@@ -79,7 +79,7 @@ tick_direction = 'in'
 top_ticks = True
 bottom_ticks = True
 left_ticks = True
-right_ticks = False
+right_ticks = True
 
 # [X]
 # X TICKS
@@ -87,7 +87,7 @@ right_ticks = False
 x_major_tick_multiple = 0 # 0 for auto
 # tick direction: 'in', 'out', or 'inout'
 x_major_tick_direction = 'in'  
-x_major_tick_width = 2
+x_major_tick_width = 1
 x_major_tick_length = 5
 # name or hexcode
 x_major_tick_color = 'black'
@@ -95,7 +95,7 @@ x_major_tick_color = 'black'
 x_minor_tick_multiple = 0 # 0 for auto
 # tick direction: 'in', 'out', or 'inout'
 x_minor_tick_direction = 'in'  
-x_minor_tick_width = 2
+x_minor_tick_width = 1
 x_minor_tick_length = 3
 # name or hexcode
 x_minor_tick_color = 'black'
@@ -106,7 +106,7 @@ x_minor_tick_color = 'black'
 y_major_tick_multiple = 0 #0 for auto
 # tick direction: 'in', 'out', or 'inout'
 y_major_tick_direction = 'in' 
-y_major_tick_width = 2
+y_major_tick_width = 1
 y_major_tick_length = 5
 # name or hexcode
 y_major_tick_color = 'black'
@@ -114,7 +114,7 @@ y_major_tick_color = 'black'
 y_minor_tick_multiple = 0 #0 for auto
 # tick direction: 'in', 'out', or 'inout'
 y_minor_tick_direction = 'in' 
-y_minor_tick_width = 2
+y_minor_tick_width = 1
 y_minor_tick_length = 3
 # name or hexcode
 y_minor_tick_color = 'black'
@@ -175,7 +175,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import copy
 import csv
-import os
+# import os
 
 def initialize_graph_settings():
     # initialize figure and ax objects
@@ -197,7 +197,7 @@ def initialize_graph_settings():
         else:
             ymin = 0
 
-        plt.vlines(x= 0, ymin= ymin, ymax= fermi_level_max_height, colors= fermi_level_color, linestyles= fermi_level_line_style, label= "Fermi Level")
+        plt.vlines(x= 0, ymin= ymin, ymax= fermi_level_max_height, colors= fermi_level_color, linestyles= fermi_level_line_style)#, label= "Fermi Level")
 
     # labels
     ax.set_xlabel(x_label)
@@ -915,7 +915,8 @@ def graph_by_orbital(element_dictionary):
                     ax.legend()
 
                 except ValueError as error:
-                    print("No orbital at", element, shell)
+                    # print("No orbital at", element, shell)
+                    pass
 
                 if hide_legend_border == True:
                     plt.legend(frameon = False)
@@ -1075,7 +1076,7 @@ def orbital_shell_sums(orbital_dictionary):
 
             except (IndexError, KeyError) as error: # nonesistant array
                 # i+=1
-                print(error)
+                # print(error)
                 continue
     
     if SPIN_POLARIZED == False:
@@ -1096,7 +1097,7 @@ def orbital_shell_sums(orbital_dictionary):
 
             except (IndexError, KeyError) as error: # nonesistant array
                 # i+=1
-                print(error)
+                # print(error)
                 continue
 
     return shell_totals
@@ -1126,7 +1127,7 @@ def element_sums(orbital_dictionary):
                 temp_element_sums_down[i] += temp_shell_sums['f_down'][i]
 
             except (ValueError, IndexError) as error:
-                print("No shell found at", error)
+                # print("No shell found at", error)
                 pass
          #TODO: if I wanted to put them in dictionaries instead and label them, I would do that here
         element_sum_dictionary['spin_up'] = temp_element_sums_up
@@ -1155,46 +1156,18 @@ def element_sums(orbital_dictionary):
 
 
 
-def parse_CSV():
-    # list folder contents 
-    directory_contents = os.listdir()
-    for file in directory_contents:
-        if file.endswith('.csv'):
-            # if csv read file
-            with open(file, 'r') as csvfile:
-                reader = csv.reader(csvfile)
-                labels = next(reader)
-                csv_data = list(zip(*reader))
-                print (labels)
-                print(csv_data)
-
-
-
-
-'''
-for suborbityals:
-if the first letter of the dictionary key is the same as the first letter of the previous dictionary key, combine the entries into the same csv
-    append the duplicate letter entry to the csv
-
-
-with open('names.csv', 'w', newline='') as csvfile:
-fieldnames = ['first_name', 'last_name']
-writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-writer.writeheader()
-writer.writerow({'first_name': 'Baked', 'last_name': 'Beans'})
-writer.writerow({'first_name': 'Lovely', 'last_name': 'Spam'})
-writer.writerow({'first_name': 'Wonderful', 'last_name': 'Spam'})
-
-'''
-
-
-
-
-
-
-
-
+# def parse_CSV():
+#     # list folder contents 
+#     directory_contents = os.listdir()
+#     for file in directory_contents:
+#         if file.endswith('.csv'):
+#             # if csv read file
+#             with open(file, 'r') as csvfile:
+#                 reader = csv.reader(csvfile)
+#                 labels = next(reader)
+#                 csv_data = list(zip(*reader))
+                # print (labels)
+                # print(csv_data)
 
 
 
@@ -1208,15 +1181,13 @@ if __name__ == "__main__":
 
         print("Processing...")
 
-
-
-
-
-        
-        graph_by_suborbital(element_dictionary) 
+        """
+        Comment or un-comment the test you want run below
+        """
+        # graph_by_suborbital(element_dictionary) 
         # graph_by_orbital(element_dictionary)   
-        #graph_by_element(element_dictionary)
-        parse_CSV()
+        graph_by_element(element_dictionary)
+    
 
         print("Displaying...")
 
